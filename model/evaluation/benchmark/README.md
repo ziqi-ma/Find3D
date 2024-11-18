@@ -1,0 +1,10 @@
+# Downloading and Pre-Processing Benchmark Data
+
+## Objaverse
+The Objaverse benchmarks can be downloaded at [xxx]. There are three folders: seen, unseen, shapenetpart. The seen folder contains Objaverse-General-Seen Catgoires (50 objects from 50 categories), the unseen folder contains Objaverse-General-Unseen Catgoires (50 objects from 50 categories), and the shapenetpart folder contains Objaverse-ShapenetPart (32 objects from 16 categories). Their format works directly with the data loader for evaluation.
+
+## ShapeNetPart
+The ShapeNetPart dataset can be downloaded [here](https://shapenet.cs.stanford.edu/media/shapenet_part_seg_hdf5_data.zip). For reproducibility, we also share the random rotation we use for each object in the test set in benchmark_reproducibility/shapenetpart/random_rotation_test.pt. We also share the subset indices we use at benchmark_reproducibility/shapenetpart/subset_idxs.json. The indices provided are the per-category indices (ordering follows the original dataset). These files are referred to by the dataset class defined in model/data/data.py
+
+## PartNetE
+The PartNetE test set can be downloaded from the test.zip [here](https://huggingface.co/datasets/minghua/PartSLIP/tree/main/data) and the metadata can be downloadwed [here](https://huggingface.co/datasets/minghua/PartSLIP/blob/main/PartNetE_meta.json). Please put both the unzipped test/ and PartNetE_meta.json under the same PartNetE root directory that you supply to the evaluation script. For reproducibility, we share the random rotation we use for each object in the test set in benchmark_reproducibility/partnete/rand_rotation.pt. This is a 1906,3 array which lists all objects' rotations in order. The objects are ordered first by category (alphabetic ordering), then by object indices per category. Please first unpack this file and create a separate tensor of shape (3,) named rand_rotation.pt to put in each object's directory, as this is expected by the data loader. We also provide the subset indices at benchmark_reproducibility/partnete/subset_idxs.json, which is used by the dataset class defined in model/data/data.py.

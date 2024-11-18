@@ -1,0 +1,30 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch==2.0.0
+torchvision==0.15.0
+torchmetrics==0.10.3
+--find-links https://data.pyg.org/whl/torch-2.0.0+cu118.html
+torch-cluster
+torch-scatter
+torch-sparse
+torch-geometric
+omegaconf
+fvcore
+iopath
+xformers==0.0.18
+h5py
+pyyaml
+sharedarray
+tensorboard
+tensorboardx
+yapf
+addict
+einops
+scipy
+plyfile
+termcolor
+timm
+spconv-cu118
+transformers
+open3d
+sentencepiece
+
