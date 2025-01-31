@@ -6,7 +6,7 @@ The data engine relies on SAM and Gemini. Please first download necessary checkp
 
 1. Download SAM checkpoint [here](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth).
 
-2. Download a json containing high-quality Objaverse asset uid's selected by Wonder3D [here](https://github.com/xxlong0/Wonder3D/blob/main/data_lists/lvis_uids_filter_by_vertex.json).
+2. Download a json containing high-quality Objaverse asset uid's selected by Wonder3D [here](https://github.com/xxlong0/Wonder3D/blob/a9eccff83cad90224af386bbf835e5555a8661b8/data_lists/lvis_uids_filter_by_vertex.json).
 
 3. Fill in the path variables in [`configs.py`](configs.py). This includes the two downloaded paths above, as well as a `DATA_ROOT` which is where all the generated data will be stored.
 
