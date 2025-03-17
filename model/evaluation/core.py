@@ -5,6 +5,8 @@ import os
 import torch.nn.functional as F
 from common.utils import visualize_pt_labels, visualize_pt_heatmap
 import numpy as np
+from utils import preprocess_pcd
+
 
 def batch_iou(mask1, mask2): # both mask1 and mask2 are binary, batched and flattened
     # of shape (BS, H*W)
@@ -310,3 +312,14 @@ def viz_pred_mask(pred, # n_pts, feat_dim
             plt.savefig(f"training_checkpts/visualization/{prefix}_obj{obj_visualize_idx}/view{i}mask{j}_gt_heatmap.png")
         
     return
+
+
+def get_feature(model, xyz, rgb, normal): # evaluate loader can only have batch size=1
+    data = preprocess_pcd(xyz.cuda(), rgb.cuda(), normal.cuda())
+    with torch.no_grad():
+        for key in data.keys():
+            if isinstance(data[key], torch.Tensor) and "full" not in key:
+                data[key] = data[key].cuda(non_blocking=True)
+        net_out = model(x=data) # n_pts,dim_feats
+        xyz_sub = data["coord"] # n_pts,3
+    return xyz_sub, net_out
