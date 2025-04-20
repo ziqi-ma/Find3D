@@ -50,7 +50,10 @@ See [`model/evaluation/benchmark/README.md`](model/evaluation/benchmark/README.m
 The environment setup for the data engine, as well as scripts for various steps, are detailed in [`dataengine/README.md`](dataengine/README.md).
 
 ## Inference on Benchmarks <a name="infbench"></a>
-To run inference on benchmarks, please first download the benchmark data according to [the Dataset section](#dataset). We provide a trained checkpoint [here](https://drive.google.com/file/d/1_nQGG8OfnWli62FrpY31KgKJX3mpOG5U/view?usp=drive_link).
+To run inference on benchmarks, please first download the benchmark data according to [the Dataset section](#dataset). The trained model can be downloaded from HuggingFace via
+```
+model = Find3D.from_pretrained("ziqima/find3d-checkpt0", dim_output=768)
+```
 Please run the following scripts in the [`model`](model/) folder, and set the `PYTHONPATH` before running inference:
 ```
 cd model
@@ -67,20 +70,20 @@ By default, rotation is applied to all objects. On ShapeNetPart and PartNetE, on
 
 Example command to evaluate on Objaverse
 ```
-python evaluation/benchmark/eval_benchmark.py --benchmark Objaverse --data_root [data root] --objaverse_split unseen --checkpoint_path [your downloaded checkpoint path]
+python evaluation/benchmark/eval_benchmark.py --benchmark Objaverse --data_root [data root] --objaverse_split unseen
 ```
 
 Example command to evaluate on ShapeNetPart
 ```
-python evaluation/benchmark/eval_benchmark.py --data_root [data root] --benchmark ShapeNetPart --checkpoint_path [your downloaded checkpoint path]
+python evaluation/benchmark/eval_benchmark.py --data_root [data root] --benchmark ShapeNetPart
 ```
 Example command to evaluate on PartNetE test set
 ```
-python evaluation/benchmark/eval_benchmark.py --benchmark PartNetE --data_root [data root --checkpoint_path [your downloaded checkpoint path]
+python evaluation/benchmark/eval_benchmark.py --benchmark PartNetE --data_root [data root]
 ```
 
 ## Inference in the Wild (Demo) <a name="infwild"></a>
-Find3D can also be evaluated on object point clouds in the wild - 3D digital assets or 3D reconstructions from 2D. We provide a trained checkpoint [here](provide link). [`model/evaluation/demo/eval_visualize.py`](model/evaluation/demo/eval_visualize.py) can take in any point cloud (as a .pcd file) and queries, and produce both a segmentation (using all queries) and a heatmap for each query. The segmentation and heatmaps will open in your browser as plotly visualizations that can be dragged and rotated. If you use ssh to connect to a headless server via Visual Studio Code, the plotly visualization will open in the browser of the client machine (e.g. your laptop browser).
+Find3D can also be evaluated on object point clouds in the wild - 3D digital assets or 3D reconstructions from 2D. The demo script [`model/evaluation/demo/eval_visualize.py`](model/evaluation/demo/eval_visualize.py) can take in any point cloud (as a .pcd file) and queries, and produce both a segmentation (using all queries) and a heatmap for each query. The segmentation and heatmaps will open in your browser as plotly visualizations that can be dragged and rotated. If you use ssh to connect to a headless server via Visual Studio Code, the plotly visualization will open in the browser of the client machine (e.g. your laptop browser).
 Please run the commands below from the [`model`](model/) directory, and set `PYTHONPATH` as the path of this repo.
 ```
 cd model
@@ -90,11 +93,11 @@ Two modes are supported: segmentation or heatmap, controlled by the flag `--mode
 
 Example command to perform segmentation on an in-the-wild point cloud in .pcd format
 ```
-python evaluation/demo/eval_visualize.py --object_path evaluation/demo/mickey.py --checkpoint_path [your downloaded checkpoint path] --mode segmentation --queries "head" "ear" "arm" "leg" "body" "hand" "shoe"
+python evaluation/demo/eval_visualize.py --object_path evaluation/demo/mickey.pcd --mode segmentation --queries "head" "ear" "arm" "leg" "body" "hand" "shoe"
 ```
 Example command to obtain query heatmap on an in-the-wild point cloud in .pcd format
 ```
-python evaluation/demo/eval_visualize.py --object_path evaluation/demo/mickey.py --checkpoint_path [your downloaded checkpoint path] --mode heatmap --queries "hand" "shoe"
+python evaluation/demo/eval_visualize.py --object_path evaluation/demo/mickey.pcd --mode heatmap --queries "hand" "shoe"
 ```
 
 ## Training <a name="training"></a>
