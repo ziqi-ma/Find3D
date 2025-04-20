@@ -5,7 +5,7 @@ import os
 import torch.nn.functional as F
 from common.utils import visualize_pt_labels, visualize_pt_heatmap
 import numpy as np
-from utils import preprocess_pcd
+from model.evaluation.utils import preprocess_pcd
 
 
 def batch_iou(mask1, mask2): # both mask1 and mask2 are binary, batched and flattened

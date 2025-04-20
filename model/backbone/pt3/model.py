@@ -23,7 +23,7 @@ try:
 except ImportError:
     flash_attn = None
 from model.backbone.pt3.serialization import encode
-
+from huggingface_hub import PyTorchModelHubMixin
 
 @torch.inference_mode()
 def offset2bincount(offset):
@@ -985,6 +985,46 @@ class PointTransformerV3(PointModule):
 
 class PointSemSeg(nn.Module):
     def __init__(self, args, dim_output, emb=64, init_logit_scale=np.log(1 / 0.07)):
+        super().__init__()
+        
+        self.dim_output = dim_output
+        
+        # define the extractor
+        self.extractor = PointTransformerV3() # this outputs a 64-dim feature per point
+
+        # define logit scale
+        self.ln_logit_scale = nn.Parameter(torch.ones([]) * init_logit_scale)
+
+        self.fc1 = nn.Linear(emb, emb)
+        self.fc2 = nn.Linear(emb, emb)
+        self.fc3 = nn.Linear(emb, emb)
+        self.fc4 = nn.Linear(emb, dim_output)
+    
+    def distillation_head(self, x):
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = F.relu(self.fc3(x))
+        x = self.fc4(x)
+        return x
+    
+    def freeze_extractor(self):
+        for param in self.extractor.parameters():
+            param.requires_grad = False
+
+    def forward(self, x, return_pts_feat=False):
+        pointall = self.extractor(x)
+        feature = pointall["feat"] #[n_pts_cur_batch, 64]
+        
+        x = self.distillation_head(feature) #[n_pts_cur_batch, dim_out]
+        
+        if return_pts_feat:
+            return x, feature
+        else:     
+            return x
+        
+
+class Find3D(nn.Module, PyTorchModelHubMixin):
+    def __init__(self, dim_output, emb=64, init_logit_scale=np.log(1 / 0.07)):
         super().__init__()
         
         self.dim_output = dim_output

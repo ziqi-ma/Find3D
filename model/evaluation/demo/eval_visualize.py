@@ -50,12 +50,11 @@ if __name__ == '__main__':
     set_seed(123)
     parser = argparse.ArgumentParser(description="Please specify input point cloud path and model checkpoint path")
     parser.add_argument("--object_path", required=True, type=str, help='The point cloud to evaluate on. Should be a .pcd file')
-    parser.add_argument("--checkpoint_path", required=True, type=str, help='path of the checkpoint to evaluate')
     parser.add_argument("--mode", required=True, type=str, help='segmentation or heatmap')
     parser.add_argument("--queries", required=True, nargs='+', help='list of queries')
     args = parser.parse_args()
     
-    model = load_model(args.checkpoint_path)
+    model = load_model()
     eval_obj_wild(model,args.object_path, args.mode, args.queries)
 
     

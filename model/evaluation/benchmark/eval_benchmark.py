@@ -52,9 +52,7 @@ def eval_category_partnete(data_root, category, model, apply_rotation=False, sub
                              drop_last=False)
     stime = time.time()
     full_miou = evaluate3d(model, test_loader, panoptic=False, N_CHUNKS=20, visualize_seg=visualize_seg, visualize_all_heatmap=visualize_all_heatmap)
-    print(f"{category}: miou: {full_miou}")
     etime = time.time()
-    print(etime-stime)
     return full_miou, etime-stime
 
 
@@ -68,9 +66,7 @@ def eval_category_shapenetpart(data_root, category, model, apply_rotation=False,
                              drop_last=False)
     stime = time.time()
     full_miou = evaluate3d(model, test_loader, panoptic=True, N_CHUNKS=1, visualize_seg=visualize_seg, visualize_all_heatmap=visualize_all_heatmap)
-    print(f"{category}: miou: {full_miou}")
     etime = time.time()
-    print(etime-stime)
     return full_miou, etime-stime
 
 
@@ -124,11 +120,10 @@ def eval_shapenetpart(data_root, model, apply_rotation, subset, decorated, use_t
 
        
 if __name__ == '__main__':
-    set_seed(123)
+    set_seed(23)
     parser = argparse.ArgumentParser(description="Please specify a benchmark name and evaluation configurations")
     parser.add_argument("--benchmark", required=True, type=str, help='The benchmark to evaluate on. Should be Objaverse, ShapeNetPart, or PartNetE')
     parser.add_argument("--data_root", required=True, type=str, help='Root directory of the benchmark data')
-    parser.add_argument("--checkpoint_path", required=True, type=str, help='path of the checkpoint to evaluate')
     parser.add_argument("--objaverse_split", type=str, help='If benchmark is Objaverse, specify "seenclass", "unseen" or "shapenetpart')
     parser.add_argument("--canonical", action='store_false', dest="rotate", help="whether to perform random rotation - this only applies to ShapeNetPart or PartNetE which have canonical orientations")
     parser.add_argument("--subset", action='store_true', dest="subsample", help="whether to evaluate on subset - this only applies to ShapeNetPart of PartNetE")
@@ -137,7 +132,7 @@ if __name__ == '__main__':
     parser.set_defaults(rotate=True, subsample=False, decorate=True, use_shapenetpart_topk_prompt=False)
     args = parser.parse_args()
     
-    model = load_model(args.checkpoint_path)
+    model = load_model()
     
     if args.benchmark == "Objaverse":
         if not args.objaverse_split:

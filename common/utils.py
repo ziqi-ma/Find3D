@@ -21,7 +21,7 @@ def visualize_pts(points, colors, save_path=None, save_rendered_path=None):
         mode='markers',
         marker=dict(
             size=1.7,
-            color=(colors.cpu().numpy()*255).astype(int),  # Use RGB colors
+            color=colors.cpu().numpy(),#(colors.cpu().numpy()*255).astype(int),  # Use RGB colors
             opacity=0.99
         ))])
     x_min, x_max = -2,2#points[:, 0].min(), points[:, 0].max()
@@ -56,7 +56,7 @@ def visualize_pts(points, colors, save_path=None, save_rendered_path=None):
         fig.write_image(save_rendered_path)
     else:
         fig.show()
-    
+
 def visualize_pt_labels(pts, labels, save_path=None, save_rendered_path=None): # pts is n*3, colors is n, 0 - n-1 where 0 is unlabeled
     part_num = labels.max()
     cmap_matrix = torch.tensor([[1,1,1], [1,0,0], [0,1,0], [0,0,1], [1,1,0], [1,0,1],

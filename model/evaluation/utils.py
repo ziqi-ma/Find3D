@@ -1,16 +1,23 @@
 import torch
 from types import SimpleNamespace
-from model.backbone.pt3.model import PointSemSeg
+from model.backbone.pt3.model import PointSemSeg, Find3D
 import numpy as np
 import random
 from transformers import AutoTokenizer, AutoModel
 import open3d as o3d
 from common.utils import visualize_pts
 
-def load_model(checkpoint_path):
+
+def load_model_checkpoint(checkpoint_path):
     args = SimpleNamespace()
     model = PointSemSeg(args=args, dim_output=768)
     model.load_state_dict(torch.load(checkpoint_path)["model_state_dict"])
+    model.eval()
+    model = model.cuda()
+    return model
+
+def load_model():
+    model = Find3D.from_pretrained("ziqima/find3d-checkpt0", dim_output=768)
     model.eval()
     model = model.cuda()
     return model
@@ -143,7 +150,7 @@ def encode_text(texts):
 def read_pcd(obj_path, visualize=True):
     pcd = o3d.io.read_point_cloud(obj_path)
     if visualize:
-        visualize_pts(torch.tensor(np.asarray(pcd.points)), torch.tensor(np.asarray(pcd.colors)), save_path="actual")
+        visualize_pts(torch.tensor(np.asarray(pcd.points)), torch.tensor(np.asarray(pcd.colors)))
     xyz = torch.tensor(np.asarray(pcd.points)).float()
     rgb = torch.tensor(np.asarray(pcd.colors)).float()
     normal = torch.tensor(np.asarray(pcd.normals)).float()
