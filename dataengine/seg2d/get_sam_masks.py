@@ -85,7 +85,7 @@ if __name__ == "__main__":
     chunk_idx = 0
     # generate masks
     parent_folder = f"{DATA_ROOT}/labeled/rendered"
-    cur_df = pd.read_csv(f"{DATA_ROOT}/labeled/chunk_ids/chunk{chunk_idx}.csv")
+    cur_df = pd.read_csv(f"{DATA_ROOT}/labeled/chunk_ids/merged{chunk_idx}.csv")
     cur_df["path"] = cur_df["class"] + "_" + cur_df["uid"]
     child_dirs = cur_df["path"].tolist()
     full_dirs = [parent_folder+"/"+child_dir for child_dir in child_dirs]
