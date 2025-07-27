@@ -1,5 +1,5 @@
 # Find Any Part in 3D
-
+### ICCV 2025 Highlight✨
 **Find3D: training a model to segment _any_ part in _any_ object based on _any_ text query using 3D assets from the internet**
 
 [Ziqi Ma][zm], [Yisong Yue][yy], [Georgia Gkioxari][gg]
